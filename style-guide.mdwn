@@ -10,12 +10,37 @@ you will never need to scan your code for matching parentheses;
 instead, you will recognize the nesting
 and content of an expression by the form of the code.
 
+Note that DrRacket helpfully provides an automatic indentation feature:
+if you select a block of code and hit the *Tab* key,
+the horizontal alignment of each line in the block
+will be adjusted to match the nesting of your code.
 
-### Rule 3: Closing parens close the line.
+All of these rules are guidelines.
+If you choose to break one, do so.
+But be aware that you are breaking one,
+and make sure that you have a good reason.
 
-As soon as you write a closing parenthesis in Scheme code, it usually means
-that you add any further closing parenthesis, and then break the line and
-start a new one:
+### Avoid long lines
+
+Long lines in Scheme programs are usually very hard to decipher.
+Consider even the simple procedure below:
+
+    (define filter (lambda (pred? lst)
+      (cond
+        ((null? lst) '())
+        ((pred? (car lst)) (cons (car lst) (filter pred? (cdr lst))))
+        (else (filter pred? (cdr lst))))))
+
+The second `cond` clause is hard to read, because
+your eyes and brain need to figure out where
+the condition ends and result expression begins,
+and even then
+the boundaries of the arguments to `cons`
+are not entierly obvious.
+
+In general,
+you will want to break lines
+immediately after you close one or more parentheses:
 
     (+ (* 2 3)
        (/ 17 5))
@@ -23,9 +48,22 @@ start a new one:
 Notice how the closing parenthesis in the product closes the line as well.
 This is a good rule of thumb to avoid too complex forms on a line
 which would be difficult to read.
+Reformatting `filter` above using this rule
+gives us the more readable:
+
+    (define filter
+      (lambda (pred? lst)
+        (cond
+          ((null? lst)
+           '())
+          ((pred? (car lst))
+           (cons (car lst)
+                 (filter pred? (cdr lst))))
+          (else
+           (filter pred? (cdr lst))))))
 
 
-### Rule 2: Indent subexpressions equally.
+### Indent subexpressions equally
 
 Basic indentation in Scheme is to indent subexpressions equally. This
 is easiest seen in example:
@@ -34,9 +72,9 @@ is easiest seen in example:
           (bar)
           (baz))
 
-As you can see, the expressions (foo), (bar) and (baz) are all lined
+As you can see, the expressions `(foo)`, `(bar)` and `(baz)` are all lined
 up under each other. They're all on the same syntactic level - all are
-arguments to LIST - so they should be lined up under each other.
+arguments to `list` - so they should be lined up under each other.
 
 When you open a new line directly after the first expression of a
 opening parenthesis, the following expressions belong on the column right of
@@ -47,25 +85,24 @@ the parenthesis. So the code above could also be written as:
      (bar)
      (baz))
 
-There are exceptions - important ones, too. Some expressions, mostly
-definition statements, get the body argument indented two spaces from
-the definition. You have seen the canonical example, DEFINE, in the
-first rule. LET is another example:
+There are exceptions.
+Some expressions,
+such as `define` or `cond` above,
+get the body argument indented two spaces from
+the definition.
+Another example is `let`:
 
     (let ((pi 3.14)
           (r 120))
       (* pi r r))
 
-Notice how the product is indented two spaces in respect to the LET
-form above.
-
-In general, Emacs' automatic indentation behavior does the right thing.
+In general, DrRacket's automatic indentation does the right thing.
 
 
-### Rule 4: Break for one - break for all.
+### Break for one - break for all
 
-If you subexpressions onto multiple lines - for example due to
-Rule 3 - put every subexpression on a single line.
+If you put subexpressions onto multiple lines,
+put every subexpression on a single line.
 
 For example, you can write
 
@@ -85,7 +122,7 @@ every argument on a line of its own, so putting more then one on any
 of the lines will likely cause the extra argument to be missed.
 
 
-### Rule 1: Parens tend to feel lonely.
+### Parens tend to feel lonely
 
 Don't put closing (or opening) parens on a line of their own. They get
 lonely easily. Seriously, it's superfluous information and takes up
@@ -99,13 +136,6 @@ lines for nothing. Therefore, the following code is good Scheme style:
 Notice the closing parens at the end. A seasoned schemer won't see
 those, though - the expression ends there, the next one begins at
 column zero, so he knows that everything is closed there.
-
-
-### Rule 5: There are no rules.
-
-All of these rules are guidelines. If you choose to break one, do so.
-It's your code. But be aware that you are breaking one, and that you
-have a good reason for doing so.
 
 
 ### Further information
