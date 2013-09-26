@@ -1,29 +1,14 @@
 ## Formatting
 
-Scheme code is read differently from many other languages. A schemer
-will not usually count parenthesis or so, but will recognize the nesting
-and content of an expression by the form of the code. So it's
-important to adhere to some basic guidelines on how to write code to
-make it easy to read for everyone. Also, these guidelines are not
-arbitrary - there are reasons for all of them, and those are good
-reasons. Try to understand them before thinking of a style of your
-own, or copying a style you use in a different language.
-
-An example of typical scheme code that is recognized by its form is
-the LET expression. Let's have a look at how it normally looks like:
-
-    (let ((fnord 5)
-          (answer 42))
-      (frobnicate fnord answer))
-
-A schemer would read that code like this: First he notices the keyword
-LET, and expect a special kind of structure: To the right of the LET
-is a list of bindings, all beneath each other. As soon as the
-indentation is farther to the left, he knows the body starts, which
-uses those bindings. As soon as anything is indented to the first
-column again (also indicated by an empty line), he knows the
-expression is over. No parenthesis counting is involved, only pattern
-matching on the form of the expression.
+Because the syntax of Scheme is so uniform,
+it is very important
+that you organize your code on the page
+in a way which makes its structure evident.
+Most seasoned Scheme programmers apply the rules below.
+If you adopt them,
+you will never need to scan your code for matching parentheses;
+instead, you will recognize the nesting
+and content of an expression by the form of the code.
 
 
 ### Rule 1: Parens tend to feel lonely.
