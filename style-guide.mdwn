@@ -26,41 +26,6 @@ Notice the closing parens at the end. A seasoned schemer won't see
 those, though - the expression ends there, the next one begins at
 column zero, so he knows that everything is closed there.
 
-**Exception:** There's only one well-known exception to this. When
-you write a list which probably will be extended later on with more
-entries, it's permissible to put all(!) closing parens on a line of
-their own:
-
-    (define capital-cities
-      '((sweden . stockholm)
-        (usa . washington)
-        (germany . berlin)
-        ))
-
-Notice how the closing parens are all on a line of their own, indented
-so to mark where the expression will continue. Remember, it's an
-exception - use this rarely.
-
-Another example of this exception are special kinds of module system
-which enclose the body of a module into a MODULE expression. Since the
-MODULE expression is not really part of the source, but just a
-description about it, the users of such module systems often leave the
-last parenthesis on a line on its own:
-
-    (module gauss mzscheme
-
-    (define (sum-up-to n)
-      (/ (* n (+ n 1))
-         2))
-
-    )
-
-Notice the closing parenthesis at the end. Also note that the DEFINE
-statement is not indented, as explained later - this is also due to
-the fact that the MODULE expression is some kind of meta-information
-about the source, and not direct part of it. Again, this is a very
-special case for these kinds of module systems.
-
 
 ### Rule 2: Indent subexpressions equally.
 
@@ -111,34 +76,6 @@ start a new one:
 Notice how the closing parenthesis in the product closes the line as well.
 This is a good rule of thumb to avoid too complex forms on a line
 which would be difficult to read.
-
-**Exception:** Again, there's one well-known exception to this, and
-that is the COND form. Consider the following:
-
-    (cond
-     ((good? x) (handle-good x))
-     ((bad? x)  (handle-bad x))
-     ((ugly? x) (handle-ugly x))
-     (else      (handle-default x)))
-
-This special case should only be used if there's only one expression
-for each condition to be done, but then it can improve the readability
-quite a lot. This works only if the whole COND is uniform in this
-regard - as soon as even one of the subexpressions grows more
-complicated, open a new line after the condition, so the normal COND
-looks like this:
-
-    (cond
-     ((good? x)
-      (handle-good x))
-     ((bad? x)
-      (handle-bad (if (really-bad? x)
-                      (really-bad->bad x)
-                      x)))
-     ((ugly? x)
-      (handle-ugly x))
-     (else
-      (handle-default x)))
 
 
 ### Rule 4: Break for one - break for all.
