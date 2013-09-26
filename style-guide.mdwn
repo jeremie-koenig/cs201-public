@@ -4,7 +4,7 @@ Because the syntax of Scheme is so uniform,
 it is very important
 that you organize your code on the page
 in a way which makes its structure evident.
-Most seasoned Scheme programmers apply the rules below.
+Most Scheme programmers employ the rules below.
 If you adopt them,
 you will never need to scan your code for matching parentheses;
 instead, you will recognize the nesting
