@@ -1,0 +1,228 @@
+title: scheme-style
+wiliki-lwp-version: 1.0
+mtime: 1289999268
+
+This page tries to explain how Scheme code is read and written.
+
+Scheme code is read differently from many other languages. A schemer
+will not usually count parenthesis or so, but will recognize the nesting
+and content of an expression by the form of the code. So it's
+important to adhere to some basic guidelines on how to write code to
+make it easy to read for everyone. Also, these guidelines are not
+arbitrary - there are reasons for all of them, and those are good
+reasons. Try to understand them before thinking of a style of your
+own, or copying a style you use in a different language.
+
+An example of typical scheme code that is recognized by its form is
+the LET expression. Let's have a look at how it normally looks like:
+
+{{{scheme
+(let ((fnord 5)
+      (answer 42))
+  (frobnicate fnord answer))
+}}}
+
+A schemer would read that code like this: First he notices the keyword
+LET, and expect a special kind of structure: To the right of the LET
+is a list of bindings, all beneath each other. As soon as the
+indentation is farther to the left, he knows the body starts, which
+uses those bindings. As soon as anything is indented to the first
+column again (also indicated by an empty line), he knows the
+expression is over. No parenthesis counting is involved, only pattern
+matching on the form of the expression.
+
+
+
+** Rule 1: Parens tend to feel lonely.
+Don't put closing (or opening) parens on a line of their own. They get
+lonely easily. Seriously, it's superfluous information and takes up
+lines for nothing. Therefore, the following code is good Scheme style:
+
+{{{scheme
+(define (fac n)
+  (if (zero? n)
+      1
+      (* n (fac (- n 1)))))
+}}}
+
+Notice the closing parens at the end. A seasoned schemer won't see
+those, though - the expression ends there, the next one begins at
+column zero, so he knows that everything is closed there.
+
+'''Exception:''' There's only one well-known exception to this. When
+you write a list which probably will be extended later on with more
+entries, it's permissible to put all(!) closing parens on a line of
+their own:
+
+{{{scheme
+(define capital-cities
+  '((sweden . stockholm)
+    (usa . washington)
+    (germany . berlin)
+    ))
+}}}
+
+Notice how the closing parens are all on a line of their own, indented
+so to mark where the expression will continue. Remember, it's an
+exception - use this rarely.
+
+Another example of this exception are special kinds of module system
+which enclose the body of a module into a MODULE expression. Since the
+MODULE expression is not really part of the source, but just a
+description about it, the users of such module systems often leave the
+last parenthesis on a line on its own:
+
+{{{scheme
+(module gauss mzscheme
+
+(define (sum-up-to n)
+  (/ (* n (+ n 1))
+     2))
+
+)
+}}}
+
+Notice the closing parenthesis at the end. Also note that the DEFINE
+statement is not indented, as explained later - this is also due to
+the fact that the MODULE expression is some kind of meta-information
+about the source, and not direct part of it. Again, this is a very
+special case for these kinds of module systems.
+
+
+** Rule 2: Indent subexpressions equally.
+Basic indentation in Scheme is to indent subexpressions equally. This
+is easiest seen in example:
+
+{{{scheme
+(list (foo)
+      (bar)
+      (baz))
+}}}
+
+As you can see, the expressions (foo), (bar) and (baz) are all lined
+up under each other. They're all on the same syntactic level - all are
+arguments to LIST - so they should be lined up under each other.
+
+When you open a new line directly after the first expression of a
+opening parenthesis, the following expressions belong on the column right of
+the parenthesis. So the code above could also be written as:
+
+{{{scheme
+(list
+ (foo)
+ (bar)
+ (baz))
+}}}
+
+There are exceptions - important ones, too. Some expressions, mostly
+definition statements, get the body argument indented two spaces from
+the definition. You have seen the canonical example, DEFINE, in the
+first rule. LET is another example:
+
+{{{scheme
+(let ((pi 3.14)
+      (r 120))
+  (* pi r r))
+}}}
+
+Notice how the product is indented two spaces in respect to the LET
+form above.
+
+In general, Emacs' automatic indentation behavior does the right thing.
+
+** Rule 3: Closing parens close the line.
+As soon as you write a closing parenthesis in Scheme code, it usually means
+that you add any further closing parenthesis, and then break the line and
+start a new one:
+
+{{{scheme
+(+ (* 2 3)
+   (/ 17 5))
+}}}
+
+Notice how the closing parenthesis in the product closes the line as well.
+This is a good rule of thumb to avoid too complex forms on a line
+which would be difficult to read.
+
+'''Exception:''' Again, there's one well-known exception to this, and
+that is the COND form. Consider the following:
+
+{{{scheme
+(cond
+ ((good? x) (handle-good x))
+ ((bad? x)  (handle-bad x))
+ ((ugly? x) (handle-ugly x))
+ (else      (handle-default x)))
+}}}
+
+This special case should only be used if there's only one expression
+for each condition to be done, but then it can improve the readability
+quite a lot. This works only if the whole COND is uniform in this
+regard - as soon as even one of the subexpressions grows more
+complicated, open a new line after the condition, so the normal COND
+looks like this:
+
+{{{scheme
+(cond
+ ((good? x)
+  (handle-good x))
+ ((bad? x)
+  (handle-bad (if (really-bad? x)
+                  (really-bad->bad x)
+                  x)))
+ ((ugly? x)
+  (handle-ugly x))
+ (else
+  (handle-default x)))
+}}}
+
+
+** Rule 4: Break for one - break for all.
+
+If you subexpressions onto multiple lines - for example due to
+Rule 3 - put every subexpression on a single line.
+
+For example, you can write
+
+{{{scheme
+(+ 1 foo bar baz)
+}}}
+
+but if one of those expressions gets more complicated, you may want it
+on a line of its own. If so, put all of the subexpressions on lines
+of their own:
+
+{{{scheme
+(+ 1
+   (foo 3.5 a)
+   bar
+   baz)
+}}}
+
+If an argument list is broken, a seasoned schemer will expect to find
+every argument on a line of its own, so putting more then one on any
+of the lines will likely cause the extra argument to be missed.
+
+
+** Rule 5: There are no rules.
+All of these rules are guidelines. If you choose to break one, do so.
+It's your code. But be aware that you are breaking one, and that you
+have a good reason for doing so.
+
+** Further information
+These are the most important conventions. There are other important
+ones, though.
+
+When people are looking through your code, they are expecting to see
+certain typographical notations to tell them more about what kind of
+variable or procedure it is. For instance, type conversion uses
+''old-type'''''->'''''new-type''. This sub-syntax for variable naming
+is further described on [[variable-naming-convention]]
+
+When writing your comments, try to follow good [[comment-style]].
+
+** Other sources
+- [http://web.archive.org/web/20020809131500/www.cs.dartmouth.edu/~cs18/F2002/handouts/scheme-tips.html Scheme Tips from Dartmouth]
+
+----
+[[category-learning-scheme]]
