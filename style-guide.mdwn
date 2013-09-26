@@ -76,21 +76,11 @@ As you can see, the expressions `(foo)`, `(bar)` and `(baz)` are all lined
 up under each other. They're all on the same syntactic level - all are
 arguments to `list` - so they should be lined up under each other.
 
-When you open a new line directly after the first expression of a
-opening parenthesis, the following expressions belong on the column right of
-the parenthesis. So the code above could also be written as:
-
-    (list
-     (foo)
-     (bar)
-     (baz))
-
-There are exceptions.
-Some expressions,
-such as `define` or `cond` above,
-get the body argument indented two spaces from
-the definition.
-Another example is `let`:
+There are exceptions,
+such as `define` as shown above,
+or `let`.
+They get the body argument indented two spaces from
+the definition:
 
     (let ((pi 3.14)
           (r 120))
