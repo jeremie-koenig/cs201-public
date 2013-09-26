@@ -11,20 +11,18 @@ instead, you will recognize the nesting
 and content of an expression by the form of the code.
 
 
-### Rule 1: Parens tend to feel lonely.
+### Rule 3: Closing parens close the line.
 
-Don't put closing (or opening) parens on a line of their own. They get
-lonely easily. Seriously, it's superfluous information and takes up
-lines for nothing. Therefore, the following code is good Scheme style:
+As soon as you write a closing parenthesis in Scheme code, it usually means
+that you add any further closing parenthesis, and then break the line and
+start a new one:
 
-    (define (fac n)
-      (if (zero? n)
-          1
-          (* n (fac (- n 1)))))
+    (+ (* 2 3)
+       (/ 17 5))
 
-Notice the closing parens at the end. A seasoned schemer won't see
-those, though - the expression ends there, the next one begins at
-column zero, so he knows that everything is closed there.
+Notice how the closing parenthesis in the product closes the line as well.
+This is a good rule of thumb to avoid too complex forms on a line
+which would be difficult to read.
 
 
 ### Rule 2: Indent subexpressions equally.
@@ -64,20 +62,6 @@ form above.
 In general, Emacs' automatic indentation behavior does the right thing.
 
 
-### Rule 3: Closing parens close the line.
-
-As soon as you write a closing parenthesis in Scheme code, it usually means
-that you add any further closing parenthesis, and then break the line and
-start a new one:
-
-    (+ (* 2 3)
-       (/ 17 5))
-
-Notice how the closing parenthesis in the product closes the line as well.
-This is a good rule of thumb to avoid too complex forms on a line
-which would be difficult to read.
-
-
 ### Rule 4: Break for one - break for all.
 
 If you subexpressions onto multiple lines - for example due to
@@ -99,6 +83,22 @@ of their own:
 If an argument list is broken, a seasoned schemer will expect to find
 every argument on a line of its own, so putting more then one on any
 of the lines will likely cause the extra argument to be missed.
+
+
+### Rule 1: Parens tend to feel lonely.
+
+Don't put closing (or opening) parens on a line of their own. They get
+lonely easily. Seriously, it's superfluous information and takes up
+lines for nothing. Therefore, the following code is good Scheme style:
+
+    (define (fac n)
+      (if (zero? n)
+          1
+          (* n (fac (- n 1)))))
+
+Notice the closing parens at the end. A seasoned schemer won't see
+those, though - the expression ends there, the next one begins at
+column zero, so he knows that everything is closed there.
 
 
 ### Rule 5: There are no rules.
