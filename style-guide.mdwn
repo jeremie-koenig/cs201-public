@@ -1,3 +1,5 @@
+# Scheme style guide for CPSC 201
+
 ## Formatting
 
 Because the syntax of Scheme is so uniform,
@@ -125,23 +127,245 @@ lines for nothing. Therefore, the following code is good Scheme style:
 
 Notice the closing parens at the end. A seasoned schemer won't see
 those, though - the expression ends there, the next one begins at
-column zero, so he knows that everything is closed there.
+column zero, so they know that everything is closed there.
 
 
-### Further information
+## Other best practices
 
-These are the most important conventions. There are other important
-ones, though.
+Consider this perfectly indented,
+perhaps technically correct piece of code:
 
-When people are looking through your code, they are expecting to see
-certain typographical notations to tell them more about what kind of
-variable or procedure it is. For instance, type conversion uses
-*old-type*`->`*new-type*. This sub-syntax for variable naming
-is further described on [[variable-naming-convention]]
+    (define helper5
+      (lambda (x)
+        (cond
+          ((null? x)
+           'error)
+          ((null? (cdr x))
+           (length (car x)))
+          ((> (length (cadr x))
+              (length (car x)))
+           (helper5 (cons (car x)
+                          (cddr x))))
+          (else
+           (helper5 (cdr x))))))
 
-When writing your comments, try to follow good [[comment-style]].
+Because the formatting rules above were followed to the letter,
+with a little bit of training,
+you will have no trouble figuring out where the subexpressions begin and end,
+or which procedure is applied to which arguments.
+Still,
+even an experienced Scheme programmer
+will be unable at first glance
+to understand what the procedure above does.
 
-### Other sources
+The guidelines below should help you
+make sure your code is as clear as possible.
 
-  * [Scheme Tips from Dartmouth](http://web.archive.org/web/20020809131500/www.cs.dartmouth.edu/~cs18/F2002/handouts/scheme-tips.html)
+### Choose variable and procedure names carefully
+
+Choosing descriptive names for your variables and procedures
+is much more important - and much harder -
+than you might suspect at first.
+
+The reason it is important
+should be obvious when you try to read the code of
+`helper5` above:
+the name of something is the first,
+immediately available piece of information
+about what that thing is an how it behaves.
+Hence,
+the following procedure will be easier to read,
+even though it is more or less identical to the previous one:
+
+    ; Length of the shortest element of a list of lists
+    (define shortest-length
+      (lambda (lists)
+        (cond
+          ((null? lists)
+           'error)
+          ((null? (cdr lists))
+           (length (car lists)))
+          ((> (length (cadr lists))
+              (length (car lists)))
+           (shortest-length (cons (car lists)
+                                  (cddr lists))))
+          (else
+           (shortest-length (cdr lists))))))
+
+In fact,
+the whole point of defining a procedure is *abstraction*:
+we create a black box
+which can be use as a component in more complex systems
+with no concern about its inner workings.
+From the name of a procedure and the associated comment,
+one should be able to predict how the procedure will behave,
+from the point of view of an outside observer.
+
+This is why naming procedures is hard:
+you need to reduce a potentially very complicated behavior
+into a few words at most.
+On the other hand, thinking of a good name
+can help you think about
+what it is that your procedure should be doing exactly.
+And if you have a hard time coming up with an appropriate name,
+then perhaps the outline of the black box
+you're trying to create
+is more complicated than it needs to be?
+
+### Keep your procedures short
+
+Shorter procedures are easier to get right,
+read, reason about and debug.
+Compare the above procedure with:
+
+    ; Length of the shortest element in a list of lists
+    (define shortest-length
+      (lambda (moves)
+        (smallest-element (lengths-of moves))))
+
+    ; Find the smallest element in a list of numbers
+    (define smallest-element
+      (lambda (lst)
+        (cond
+          ((null? lst)
+           'error)
+          ((null? (cdr lst))
+           (car lst))
+          (else
+           (minimum (car lst)
+                    (smallest-element (cdr lst)))))))
+
+    ; Choose the smaller one of two numbers
+    (define minimum
+      (lambda (x y)
+        (if (< x y)
+            x
+            y)))
+
+    ; Given a list of lists, build a list of their lengths
+    (define lengths-of
+      (lambda (lists)
+        (cond
+          ((null? lists)
+           '())
+          (else
+           (cons (length (car lists))
+                 (lengths-of (cdr lists)))))))
+
+### Avoid duplicating code and computations
+
+Consider this procedure:
+
+    (define all-short-moves
+      (lambda (sum state)
+        (keep-moves-of-length (shortest-length (all-moves sum state))
+                              (all-moves sum states))))
+
+Notice that `(all-moves sum states)` appears twice.
+This means that Scheme will have to compute the exact same thing twice.
+This code can be made more efficient
+by using `let` to bind the result of this computation
+to a local variable:
+
+    (define all-short-move
+      (lambda (sum state)
+        (let ((moves (all-moves sum state)))
+          (keep-moves-of-length (shortest-length moves)
+                                moves))))
+
+More generally,
+code duplication is best avoided for several reasons.
+If you write the same thing several times,
+you're more likely to make a mistake.
+If you have to modify it later on,
+you might forget about some of the copies.
+Whenever you find yourself typing the same thing several times,
+it is generally a good indication that
+you should be writing an auxiliary procedure.
+
+Sometimes it is not entirely obvious how to do that.
+Consider the following procedures:
+
+    (define keep-moves-of-length
+      (lambda (len moves)
+        (cond
+          ((null? moves)
+           '())
+          ((= len (length (car moves)))
+           (cons (car moves)
+                 (keep-moves-of-length len (cdr moves))))
+          (else
+           (keep-moves-of-length len (cdr moves))))))
+
+    (define keep-possible-moves
+      (lambda (sum moves)
+        (cond
+          ((null? moves)
+           '())
+          ((= (sum-of (car moves))
+              sum)
+           (cons (car moves)
+                 (keep-possible-moves sum (cdr moves))))
+          (else
+           (keep-possible-moves sum (cdr moves))))))
+
+Clearly they have much code in common:
+both are meant to filter a list
+in order to keep only those elements which
+satifsy a certain property
+(such as, being of length `len`,
+or adding up to `sum`).
+The only difference between them
+is the code used for testing
+which elements qualify.
+However,
+it may not be entierly obvious how to cut it out
+into an auxiliary procedure.
+
+But Scheme procedures are values like any other,
+and this can be used to inject the varying code
+into a common template as a parameter.
+The resulting procedure
+is traditionally called `filter` and it goes like this:
+
+    (define filter
+      (lambda (pred? list)
+        (cond
+          ((null? list)
+           '())
+          ((pred? (car list))
+           (cons (car list)
+                 (filter pred? (cdr list))))
+          (else
+           (filter pred? (cdr list))))))
+
+Then `keep-moves-of-length` and `keep-possible-moves`
+can be rewritten as:
+
+    (define keep-moves-of-length
+      (lambda (len moves)
+        (filter (lambda (m)
+                  (= len (length m)))
+                moves)))
+
+    (define keep-possible-moves
+      (lambda (sum moves)
+        (filter (lambda (m)
+                  (= (sum-of m)
+                     sum))
+                moves)))
+
+
+## Acknowledgements
+
+This document is distributed under the
+[Creative Commons Attribution-ShareAlike 2.0 license](http://creativecommons.org/licenses/by-sa/2.0/).
+It is derived from the
+[style guide on schemewiki.org](http://community.schemewiki.org/?scheme-style)
+(specifically,
+[this](http://community.schemewiki.org/?p=scheme-style&c=hv&t=1289999268)
+version),
+and draws inspiration from
+[this document](http://web.archive.org/web/20020809131500/www.cs.dartmouth.edu/~cs18/F2002/handouts/scheme-tips.html)
+as well.
 
