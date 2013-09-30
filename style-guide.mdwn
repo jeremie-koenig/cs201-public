@@ -1,5 +1,6 @@
 # Scheme style guide for CPSC 201
 
+
 ## Formatting
 
 Because the syntax of Scheme is so uniform,
@@ -21,6 +22,7 @@ All of these rules are guidelines.
 If you choose to break one, do so.
 But be aware that you are breaking one,
 and make sure that you have a good reason.
+
 
 ### Avoid long lines
 
@@ -161,6 +163,7 @@ to understand what the procedure above does.
 The guidelines below should help you
 make sure your code is as clear as possible.
 
+
 ### Choose variable and procedure names carefully
 
 Choosing descriptive names for your variables and procedures
@@ -212,6 +215,7 @@ then perhaps the outline of the black box
 you're trying to create
 is more complicated than it needs to be?
 
+
 ### Keep your procedures short
 
 Shorter procedures are easier to get right,
@@ -251,6 +255,7 @@ Compare the above procedure with:
           (else
            (cons (length (car lists))
                  (lengths-of (cdr lists)))))))
+
 
 ### Avoid duplicating code and computations
 
