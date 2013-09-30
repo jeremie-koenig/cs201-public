@@ -19,9 +19,10 @@ h2 {
 pre {
 	background: #ddd;
 	border: 1px solid #000;
+	padding: 1px;
 	margin-left: 10ex;
 	width: 75ex;
-	padding: 1ex;
+	display: inline-table;
 }
 </style>
 
@@ -45,11 +46,6 @@ Note that DrRacket helpfully provides an automatic indentation feature:
 if you select a block of code and hit the *Tab* key,
 the horizontal alignment of each line in the block
 will be adjusted to match the nesting of your code.
-
-All of these rules are guidelines.
-If you choose to break one, do so.
-But be aware that you are breaking one,
-and make sure that you have a good reason.
 
 
 ### Avoid long lines
@@ -226,7 +222,7 @@ even though it is more or less identical to the previous one:
 In fact,
 the whole point of defining a procedure is *abstraction*:
 we create a black box
-which can be use as a component in more complex systems
+which can be used as a building block in a more complex system,
 with no concern about its inner workings.
 From the name of a procedure and the associated comment,
 one should be able to predict how the procedure will behave,
@@ -300,7 +296,7 @@ This code can be made more efficient
 by using `let` to bind the result of this computation
 to a local variable:
 
-    (define all-short-move
+    (define all-short-moves
       (lambda (sum state)
         (let ((moves (all-moves sum state)))
           (keep-moves-of-length (shortest-length moves)
@@ -358,8 +354,9 @@ into an auxiliary procedure.
 But Scheme procedures are values like any other,
 and this can be used to inject the varying code
 into a common template as a parameter.
-The resulting procedure
-is traditionally called `filter` and it goes like this:
+In fact this common template is exactly the `filter`
+procedure which we saw earlier!
+For reference:
 
     (define filter
       (lambda (pred? list)
@@ -387,6 +384,26 @@ can be rewritten as:
                   (= (sum-of m)
                      sum))
                 moves)))
+
+
+## Final remarks
+
+You may have noticed that in `filter` above,
+the subexpression `(filter pred? (cdr list))`
+appears twice.
+We could have used `let` to factor it out,
+however in this particular case,
+it would have significantly complicated the code,
+defeating the purpose.
+Furthermore,
+this would break
+[tail call optimization](http://en.wikipedia.org/wiki/Tail_call).
+
+The point is:
+all of these rules are guidelines.
+If you choose to break one, do so.
+But be aware that you are breaking one,
+and make sure that you have a good reason.
 
 
 ## Acknowledgements
