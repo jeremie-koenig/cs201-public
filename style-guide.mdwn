@@ -146,10 +146,10 @@ Don't put closing (or opening) parens on a line of their own. They get
 lonely easily. Seriously, it's superfluous information and takes up
 lines for nothing. Therefore, the following code is good Scheme style:
 
-    (define (fac n)
+    (define (factorial n)
       (if (zero? n)
           1
-          (* n (fac (- n 1)))))
+          (* n (factorial (- n 1)))))
 
 Notice the closing parens at the end. A seasoned schemer won't see
 those, though - the expression ends there, the next one begins at
@@ -195,14 +195,16 @@ is much more important - and much harder -
 than you might suspect at first.
 
 The reason it is important
-should be obvious when you try to read the code of
-`helper5` above:
-the name of something is the first,
+becomes apparent when when you try to read the code of
+`helper5` above.
+The name of something is the first,
 immediately available piece of information
-about what that thing is an how it behaves.
+about what it is and how it behaves.
 Hence,
-the following procedure will be easier to read,
-even though it is more or less identical to the previous one:
+the following procedure is somewhat easier to read
+than the previous one,
+even though it is identical
+as far as the Scheme interpreter is concerned:
 
     ; Length of the shortest element of a list of lists
     (define shortest-length
@@ -221,12 +223,12 @@ even though it is more or less identical to the previous one:
 
 In fact,
 the whole point of defining a procedure is *abstraction*:
-we create a black box
-which can be used as a building block in a more complex system,
+we create a black box,
+which can then be used as a building block in a more complex system,
 with no concern about its inner workings.
 From the name of a procedure and the associated comment,
 one should be able to predict how the procedure will behave,
-from the point of view of an outside observer.
+without having to study the details of its body.
 
 This is why naming procedures is hard:
 you need to reduce a potentially very complicated behavior
@@ -283,6 +285,9 @@ Compare the above procedure with:
 
 ### Avoid duplicating code and computations
 
+*[FIXME: perhaps it is not ideal to be mixing the two.
+How would you go about it?]*
+
 Consider this procedure:
 
     (define all-short-moves
@@ -312,8 +317,12 @@ Whenever you find yourself typing the same thing several times,
 it is generally a good indication that
 you should be writing an auxiliary procedure.
 
-Sometimes it is not entirely obvious how to do that.
-Consider the following procedures:
+
+### Use higher-order procedures
+
+Sometimes it is not entirely obvious how to
+package some redundant code into its own procedure.
+Consider the following:
 
     (define keep-moves-of-length
       (lambda (len moves)
@@ -338,7 +347,7 @@ Consider the following procedures:
           (else
            (keep-possible-moves sum (cdr moves))))))
 
-Clearly they have much code in common:
+Clearly these two procedures have much code in common:
 both are meant to filter a list
 in order to keep only those elements which
 satifsy a certain property
@@ -351,7 +360,7 @@ However,
 it may not be entierly obvious how to cut it out
 into an auxiliary procedure.
 
-But Scheme procedures are values like any other,
+However, Scheme procedures are values like any other,
 and this can be used to inject the varying code
 into a common template as a parameter.
 In fact this common template is exactly the `filter`
@@ -384,6 +393,38 @@ can be rewritten as:
                   (= (sum-of m)
                      sum))
                 moves)))
+
+Procedures which take other procedures as arguments,
+or which return procedures as a result,
+are called *higher order procedures*,
+and they often correspond to frequently-occuring
+patterns of code.
+In fact, one such pattern was also present
+in the `lengths-of` procedure that we saw earlier:
+
+    ; Given a list of lists, build a list of their lengths
+    (define lengths-of
+      (lambda (lists)
+        (cond
+          ((null? lists)
+           '())
+          (else
+           (cons (length (car lists))
+                 (lengths-of (cdr lists)))))))
+
+The `lengths-of` procedure
+evaluates to a list
+consisting of the results
+of applying the `length` function
+to each element in an existing list.
+But we know that this pattern is captured by
+the `map` procedure,
+hence `lengths-of` can be written as:
+
+    ; Given a list of lists, build a list of their lengths
+    (define lengths-of
+      (lambda (lists)
+        (map length lists)))
 
 
 ## Final remarks
