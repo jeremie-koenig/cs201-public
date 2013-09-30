@@ -1,3 +1,31 @@
+
+<style type="text/css">
+body {
+        max-width: 100ex;
+        margin: 1ex auto;
+        background-image: url("graphe-clair.png");
+        background-repeat: no-repeat;
+        background-position: top right;
+        background-attachment: fixed;
+}
+h1 {
+	text-align: center;
+}
+h2 {
+        background: #ddd;
+        padding: .2ex;
+        border-bottom: 1px solid #000;
+}
+pre {
+	background: #ddd;
+	border: 1px solid #000;
+	margin-left: 10ex;
+	width: 75ex;
+	padding: 1ex;
+}
+</style>
+
+
 # Scheme style guide for CPSC 201
 
 
