@@ -65,7 +65,7 @@ your eyes and brain need to figure out where
 the condition ends and result expression begins,
 and even then
 the boundaries of the arguments to `cons`
-are not entierly obvious.
+are not entirely obvious.
 
 In general,
 you will want to break lines
