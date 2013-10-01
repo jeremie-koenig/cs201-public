@@ -92,6 +92,22 @@ gives us the more readable:
            (filter pred? (cdr lst))))))
 
 
+### Parens tend to feel lonely
+
+Don't put closing (or opening) parens on a line of their own. They get
+lonely easily. Seriously, it's superfluous information and takes up
+lines for nothing. Therefore, the following code is good Scheme style:
+
+    (define (factorial n)
+      (if (zero? n)
+          1
+          (* n (factorial (- n 1)))))
+
+Notice the closing parens at the end. A seasoned schemer won't see
+those, though - the expression ends there, the next one begins at
+column zero, so they know that everything is closed there.
+
+
 ### Indent subexpressions equally
 
 Basic indentation in Scheme is to indent subexpressions equally. This
@@ -139,22 +155,6 @@ of their own:
 If an argument list is broken, a seasoned schemer will expect to find
 every argument on a line of its own, so putting more then one on any
 of the lines will likely cause the extra argument to be missed.
-
-
-### Parens tend to feel lonely
-
-Don't put closing (or opening) parens on a line of their own. They get
-lonely easily. Seriously, it's superfluous information and takes up
-lines for nothing. Therefore, the following code is good Scheme style:
-
-    (define (factorial n)
-      (if (zero? n)
-          1
-          (* n (factorial (- n 1)))))
-
-Notice the closing parens at the end. A seasoned schemer won't see
-those, though - the expression ends there, the next one begins at
-column zero, so they know that everything is closed there.
 
 
 ## Other best practices
