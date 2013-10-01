@@ -1,20 +1,21 @@
 
 <style type="text/css">
 body {
-        max-width: 100ex;
-        margin: 1ex auto;
-        background-image: url("graphe-clair.png");
-        background-repeat: no-repeat;
-        background-position: top right;
-        background-attachment: fixed;
+	max-width: 100ex;
+	margin: 1ex auto;
+	background-image: url("graphe-clair.png");
+	background-repeat: no-repeat;
+	background-position: top right;
+	background-attachment: fixed;
 }
 h1 {
 	text-align: center;
 }
 h2 {
-        background: #ddd;
-        padding: .2ex;
-        border-bottom: 1px solid #000;
+	background: #ddd;
+	padding: .2ex;
+	border-bottom: 1px solid #000;
+	margin-top: 2em;
 }
 pre {
 	background: #ddd;
@@ -356,16 +357,16 @@ or adding up to `sum`).
 The only difference between them
 is the code used for testing
 which elements qualify.
-However,
-it may not be entierly obvious how to cut it out
+However, it may not be entierly obvious
+how to factorize the common code
 into an auxiliary procedure.
 
-However, Scheme procedures are values like any other,
-and this can be used to inject the varying code
+Luckily, Scheme procedures are values like any other,
+and this can be used to inject some varying code
 into a common template as a parameter.
-In fact this common template is exactly the `filter`
+In fact, in this case the common template is exactly the `filter`
 procedure which we saw earlier!
-For reference:
+For reference we had:
 
     (define filter
       (lambda (pred? list)
@@ -397,7 +398,7 @@ can be rewritten as:
 Procedures which take other procedures as arguments,
 or which return procedures as a result,
 are called *higher order procedures*,
-and they often correspond to frequently-occuring
+and they usually correspond to frequently-occuring
 patterns of code.
 In fact, one such pattern was also present
 in the `lengths-of` procedure that we saw earlier:
@@ -427,7 +428,7 @@ hence `lengths-of` can be written as:
         (map length lists)))
 
 
-## Final remarks
+## Closing remarks
 
 You may have noticed that in `filter` above,
 the subexpression `(filter pred? (cdr list))`
@@ -439,12 +440,27 @@ defeating the purpose.
 Furthermore,
 this would break
 [tail call optimization](http://en.wikipedia.org/wiki/Tail_call).
-
 The point is:
 all of these rules are guidelines.
 If you choose to break one, do so.
 But be aware that you are breaking one,
 and make sure that you have a good reason.
+
+Another way to avoid duplicating code
+is to use Scheme's built-in procedures
+when one is available that suits a given purpose.
+Hence,
+in the above,
+we could have used `min`
+instead of writing `minimum` by hand.
+Even better,
+since `min` can accept any number of arguments,
+we could have used `(apply min lst)`
+instead of writing a `smallest-element` procedure.
+The variant of Scheme used in CS201,
+and the set of built-in procedures,
+are defined in the document called
+[R5RS](http://www.schemers.org/Documents/Standards/R5RS/HTML/).
 
 
 ## Acknowledgements
@@ -457,6 +473,6 @@ It is derived from the
 [this](http://community.schemewiki.org/?p=scheme-style&c=hv&t=1289999268)
 version),
 and draws inspiration from
-[this document](http://web.archive.org/web/20020809131500/www.cs.dartmouth.edu/~cs18/F2002/handouts/scheme-tips.html)
+[this excellent document from Dartmouth](http://web.archive.org/web/20020809131500/www.cs.dartmouth.edu/~cs18/F2002/handouts/scheme-tips.html)
 as well.
 
