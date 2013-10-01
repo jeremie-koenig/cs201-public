@@ -196,7 +196,7 @@ is much more important - and much harder -
 than you might suspect at first.
 
 The reason it is important
-becomes apparent when when you try to read the code of
+becomes apparent when you try to read the code of
 `helper5` above.
 The name of something is the first,
 immediately available piece of information
