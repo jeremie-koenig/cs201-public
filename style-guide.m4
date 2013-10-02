@@ -9,10 +9,6 @@
 	body {
 		max-width: 100ex;
 		margin: 1ex auto;
-		background-image: url("graphe-clair.png");
-		background-repeat: no-repeat;
-		background-position: top right;
-		background-attachment: fixed;
 	}
 	h1 {
 		text-align: center;
