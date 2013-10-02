@@ -98,10 +98,11 @@ Don't put closing (or opening) parens on a line of their own. They get
 lonely easily. Seriously, it's superfluous information and takes up
 lines for nothing. Therefore, the following code is good Scheme style:
 
-    (define (factorial n)
-      (if (zero? n)
-          1
-          (* n (factorial (- n 1)))))
+    (define factorial
+      (lambda (n)
+        (if (zero? n)
+            1
+            (* n (factorial (- n 1))))))
 
 Notice the closing parens at the end. A seasoned schemer won't see
 those, though - the expression ends there, the next one begins at
@@ -288,40 +289,44 @@ Compare the above procedure with:
 
 Consider this code:
 
-    (define (roll dice)
-      (cond
-        ((null? dice) 0)
-        (else (+ (list-ref (car dice)
-                           (random-integer
-                             (length (car dice))))
-                 (roll (cdr dice)))))
+    (define roll
+      (lambda (dice)
+        (cond
+          ((null? dice) 0)
+          (else (+ (list-ref (car dice)
+                             (random-integer
+                               (length (car dice))))
+                   (roll (cdr dice)))))))
 
-    (define (choose-random-move sum state)
-      (cond
-        ((null? (possible-moves sum state))
-         'none)
-        (else
-         (list-ref (possible-moves sum state)
-                   (random-integer
-                     (length (possible-moves sum states)))))))
+    (define choose-random-move
+      (lambda (sum state)
+        (cond
+          ((null? (possible-moves sum state))
+           'none)
+          (else
+           (list-ref (possible-moves sum state)
+                     (random-integer
+                       (length (possible-moves sum states))))))))
 
 Both of these procedures contain the subexpression
 `(list-ref` *somelist* `(random-integer (length` *somelist* `)))`,
 and so we may want to split that into an auxiliary procedure,
 namely `pick-random`:
 
-    (define (roll dice)
-      (cond
-        ((null? dice) 0)
-        (else (+ (pick-random (car dice))
-                 (roll (cdr dice))))))
+    (define roll
+      (lambda (dice)
+        (cond
+          ((null? dice) 0)
+          (else (+ (pick-random (car dice))
+                   (roll (cdr dice)))))))
 
-    (define (choose-random-move sum state)
-      (cond
-        ((null? (possible-moves sum state))
-         'none)
-        (else
-         (pick-random (possible-moves sum states)))))
+    (define choose-random-move 
+      (lambda (sum state)
+        (cond
+          ((null? (possible-moves sum state))
+           'none)
+          (else
+           (pick-random (possible-moves sum states))))))
 
     (define pick-random
       (lambda (lst)
