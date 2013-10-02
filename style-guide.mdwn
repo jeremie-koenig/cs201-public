@@ -154,7 +154,7 @@ of their own:
        baz)
 
 If an argument list is broken, a seasoned schemer will expect to find
-every argument on a line of its own, so putting more then one on any
+every argument on a line of its own, so putting more than one on any
 of the lines will likely cause the extra argument to be missed.
 
 
