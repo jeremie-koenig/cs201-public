@@ -309,7 +309,7 @@ Consider this code:
                        (length (possible-moves sum states))))))))
 
 Both of these procedures contain the subexpression
-`(list-ref <`*somthing*`> (random-integer (length <`*something*`>)))`,
+`(list-ref <`*something*`> (random-integer (length <`*something*`>)))`,
 and so we may want to split that into an auxiliary procedure,
 namely `pick-random`:
 
@@ -438,13 +438,13 @@ Consider the following:
 Clearly these two procedures have much code in common:
 both are meant to filter a list
 in order to keep only those elements which
-satifsy a certain property
+satisfy a certain property
 (such as, being of length `len`,
 or adding up to `sum`).
 The only difference between them
 is the code used for testing
 which elements qualify.
-However, it may not be entierly obvious
+However, it may not be entirely obvious
 how to factorize the common code
 into an auxiliary procedure.
 
@@ -485,7 +485,7 @@ can be rewritten as:
 Procedures which take other procedures as arguments,
 or which return procedures as a result,
 are called *higher order procedures*,
-and they usually correspond to frequently-occuring
+and they usually correspond to frequently-occurring
 patterns of code.
 In fact, one such pattern was also present
 in the `lengths-of` procedure that we saw earlier:
@@ -556,7 +556,7 @@ are defined in the document called
 [R5RS](http://www.schemers.org/Documents/Standards/R5RS/HTML/).
 
 
-## Acknowledgements
+## Acknowledgments
 
 This document is distributed under the
 [Creative Commons Attribution-ShareAlike 2.0 license](http://creativecommons.org/licenses/by-sa/2.0/).
