@@ -1,33 +1,4 @@
 
-<style type="text/css">
-body {
-	max-width: 100ex;
-	margin: 1ex auto;
-	background-image: url("graphe-clair.png");
-	background-repeat: no-repeat;
-	background-position: top right;
-	background-attachment: fixed;
-}
-h1 {
-	text-align: center;
-}
-h2 {
-	background: #ddd;
-	padding: .2ex;
-	border-bottom: 1px solid #000;
-	margin-top: 2em;
-}
-pre {
-	background: #ddd;
-	border: 1px solid #000;
-	padding: 1px;
-	margin-left: 10ex;
-	width: 75ex;
-	display: inline-table;
-}
-</style>
-
-
 # Scheme style guide for CPSC 201
 
 
@@ -382,7 +353,7 @@ since we use `pick-random-if-there-is-one` only once,
 and it is rather idiosyncratic
 (and therefore unlikely to be needed again),
 we can use
-[the `let` syntax](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_idx_124)
+[the `let` syntax](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%25_idx_124)
 instead of defining a new procedure:
 
     (define choose-random-move
