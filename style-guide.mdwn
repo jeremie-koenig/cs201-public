@@ -514,6 +514,12 @@ hence `lengths-of` can be written as:
       (lambda (lists)
         (map length lists)))
 
+In fact,
+to a seasoned Scheme programmer,
+`(map length lists)` is much more precise and evocative than
+`(lengths-of lists)`,
+therefore we may want to drop the procedure altogether.
+
 
 ## Closing remarks
 
