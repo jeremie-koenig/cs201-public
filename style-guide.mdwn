@@ -518,7 +518,7 @@ In fact,
 to a seasoned Scheme programmer,
 `(map length lists)` is much more precise and evocative than
 `(lengths-of lists)`,
-therefore we may want to drop the procedure altogether.
+therefore we may want to drop the `lengths-of` procedure altogether.
 
 
 ## Closing remarks
