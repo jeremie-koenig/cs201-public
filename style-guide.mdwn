@@ -309,7 +309,7 @@ Consider this code:
                        (length (possible-moves sum states))))))))
 
 Both of these procedures contain the subexpression
-`(list-ref` *somelist* `(random-integer (length` *somelist* `)))`,
+`(list-ref <`*somthing*`> (random-integer (length <`*something*`>)))`,
 and so we may want to split that into an auxiliary procedure,
 namely `pick-random`:
 
@@ -364,7 +364,7 @@ the resulting program will also be more efficient.
 
 It is of course tempting to apply the same principle
 in order to merge the two remaining uses of
-`possible-moves` into one:
+`(possible-moves sum states)` into one:
 
     (define choose-random-move
       (lambda (sum state)
@@ -378,9 +378,10 @@ in order to merge the two remaining uses of
           (else (pick-random lst)))))
 
 However,
-since we need `pick-random-if-there-is-one` only once,
-and it is somewhat idiosyncratic,
-we could use
+since we use `pick-random-if-there-is-one` only once,
+and it is rather idiosyncratic
+(and therefore unlikely to be needed again),
+we can use
 [the `let` syntax](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_idx_124)
 instead of defining a new procedure:
 
@@ -391,8 +392,7 @@ instead of defining a new procedure:
             ((null? move) 'none)
             (else (pick-random moves))))))
 
-Curious readers
-may be interested in knowning that
+It is interesting to note that
 `(let ((<`*x1*`> <`*v1*`>)` ...
       `(<`*xn*`> <`*vn*`>)) <`*body*`>)`
 is actually just syntactic sugar for
@@ -402,7 +402,7 @@ is actually just syntactic sugar for
   `<`*vn*`>)`,
 and so this new version
 pretty much amounts to
-replacing the variable `pick-random-if-there-is-one`
+replacing the constant `pick-random-if-there-is-one`
 by its definition!
 
 
@@ -562,4 +562,7 @@ version),
 and draws inspiration from
 [this excellent document from Dartmouth](http://web.archive.org/web/20020809131500/www.cs.dartmouth.edu/~cs18/F2002/handouts/scheme-tips.html)
 as well.
+Contributors include the
+[CS201 staff](http://zoo.cs.yale.edu/classes/cs201/Fall_2013/contact.html)
+at Yale University for the fall of 2013.
 
