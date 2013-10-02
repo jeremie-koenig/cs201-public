@@ -284,32 +284,51 @@ Compare the above procedure with:
                  (lengths-of (cdr lists)))))))
 
 
-### Avoid duplicating code and computations
+### Avoid duplicating code
 
-*[FIXME: perhaps it is not ideal to be mixing the two.
-How would you go about it?]*
+Consider this code:
 
-Consider this procedure:
+    (define (roll dice)
+      (cond
+        ((null? dice) 0)
+        (else (+ (list-ref (car dice)
+                           (random-integer
+                             (length (car dice))))
+                 (roll (cdr dice)))))
 
-    (define all-short-moves
-      (lambda (sum state)
-        (keep-moves-of-length (shortest-length (all-moves sum state))
-                              (all-moves sum states))))
+    (define (choose-random-move sum state)
+      (cond
+        ((null? (possible-moves sum state))
+         'none)
+        (else
+         (list-ref (possible-moves sum state)
+                   (random-integer
+                     (length (possible-moves sum states)))))))
 
-Notice that `(all-moves sum states)` appears twice.
-This means that Scheme will have to compute the exact same thing twice.
-This code can be made more efficient
-by using `let` to bind the result of this computation
-to a local variable:
+Both of these procedures contain the subexpression
+`(list-ref` *somelist* `(random-integer (length` *somelist* `)))`,
+and so we may want to split that into an auxiliary procedure,
+namely `pick-random`:
 
-    (define all-short-moves
-      (lambda (sum state)
-        (let ((moves (all-moves sum state)))
-          (keep-moves-of-length (shortest-length moves)
-                                moves))))
+    (define (roll dice)
+      (cond
+        ((null? dice) 0)
+        (else (+ (pick-random (car dice))
+                 (roll (cdr dice))))))
 
-More generally,
-code duplication is best avoided for several reasons.
+    (define (choose-random-move sum state)
+      (cond
+        ((null? (possible-moves sum state))
+         'none)
+        (else
+         (pick-random (possible-moves sum states)))))
+
+    (define pick-random
+      (lambda (lst)
+        (list-ref lst
+                  (random-integer (length lst)))))
+
+Code duplication is best avoided for several reasons.
 If you write the same thing several times,
 you're more likely to make a mistake.
 If you have to modify it later on,
@@ -317,6 +336,69 @@ you might forget about some of the copies.
 Whenever you find yourself typing the same thing several times,
 it is generally a good indication that
 you should be writing an auxiliary procedure.
+
+
+### Avoid duplicating computations
+
+You may have noticed another benefit
+to rewriting the code above.
+Before,
+the `choose-random-move` procedure
+had to compute the list of all `possible-moves`
+three times:
+to check whether there were any,
+to count them, and
+finally to look up the *n*th one among them.
+Now,
+the last two uses of `(possible-moves sum states)`
+have been merged into one,
+with the result passed to the `pick-random` procedure
+we introduced.
+Hence,
+the resulting program will also be more efficient.
+
+It is of course tempting to apply the same principle
+in order to merge the two remaining uses of
+`possible-moves` into one:
+
+    (define choose-random-move
+      (lambda (sum state)
+        (pick-random-if-there-is-one
+          (possible-moves sum state)))
+
+    (define pick-random-if-there-is-one
+      (lambda (lst)
+        (cond
+          ((null? lst) 'none)
+          (else (pick-random lst)))))
+
+However,
+since we need `pick-random-if-there-is-one` only once,
+and it is somewhat idiosyncratic,
+we could use
+[the `let` syntax](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_idx_124)
+instead of defining a new procedure:
+
+    (define choose-random-move
+      (lambda (sum state)
+        (let ((moves (possible-moves sum state)))
+          (cond
+            ((null? move) 'none)
+            (else (pick-random moves))))))
+
+Curious readers
+may be interested in knowning that
+`(let ((<`*x1*`> <`*v1*`>)` ...
+      `(<`*xn*`> <`*vn*`>)) <`*body*`>)`
+is actually just syntactic sugar for
+`((lambda (<`*x1*`>` ... `<`*xn*`>) <`*body*`>)`
+  `<`*v1*`>`
+  ...
+  `<`*vn*`>)`,
+and so this new version
+pretty much amounts to
+replacing the variable `pick-random-if-there-is-one`
+by its definition!
 
 
 ### Use higher-order procedures
