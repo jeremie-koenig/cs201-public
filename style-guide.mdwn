@@ -531,6 +531,8 @@ are defined in the document called
 
 This document is distributed under the
 [Creative Commons Attribution-ShareAlike 2.0 license](http://creativecommons.org/licenses/by-sa/2.0/).
+The [Markdown](http://daringfireball.net/projects/markdown/) source is available
+[on github](https://github.com/jeremie-koenig/cs201-public).
 It is derived from the
 [style guide on schemewiki.org](http://community.schemewiki.org/?scheme-style)
 (specifically,
