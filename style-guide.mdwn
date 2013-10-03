@@ -544,7 +544,7 @@ and draws inspiration from
 as well.
 
 Most of the *Other best practices* section
-was written by [Jérémie Koenig](mailto:jeremie.koenig@yale.edu),
+was written by [Jérémie Koenig](http://www.cs.yale.edu/homes/jkoenig)
 with input from [Patrick Paczkowski](http://graphics.cs.yale.edu/site/people/patrick-paczkowski)
 and the rest of the
 [CS201 staff](http://zoo.cs.yale.edu/classes/cs201/Fall_2013/contact.html)
