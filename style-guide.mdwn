@@ -534,12 +534,17 @@ This document is distributed under the
 It is derived from the
 [style guide on schemewiki.org](http://community.schemewiki.org/?scheme-style)
 (specifically,
+the *Formatting* section was written based on
 [this](http://community.schemewiki.org/?p=scheme-style&c=hv&t=1289999268)
 version),
 and draws inspiration from
 [this excellent document from Dartmouth](http://web.archive.org/web/20020809131500/www.cs.dartmouth.edu/~cs18/F2002/handouts/scheme-tips.html)
 as well.
-Contributors include the
+
+Most of the *Other best practices* section
+was written by [Jérémie Koenig](mailto:jeremie.koenig@yale.edu),
+with input from [Patrick Paczkowski](http://graphics.cs.yale.edu/site/people/patrick-paczkowski)
+and the rest of the
 [CS201 staff](http://zoo.cs.yale.edu/classes/cs201/Fall_2013/contact.html)
 at Yale University for the fall of 2013.
 
