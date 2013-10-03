@@ -333,7 +333,7 @@ we introduced.
 Hence,
 the resulting program will also be more efficient.
 
-It is of course tempting to apply the same principle
+Now, it is tempting to apply the same principle
 in order to merge the two remaining uses of
 `(possible-moves sum states)` into one:
 
@@ -358,10 +358,10 @@ instead of defining a new procedure:
 
     (define choose-random-move
       (lambda (sum state)
-        (let ((moves (possible-moves sum state)))
+        (let ((lst (possible-moves sum state)))
           (cond
-            ((null? move) 'none)
-            (else (pick-random moves))))))
+            ((null? lst) 'none)
+            (else (pick-random lst))))))
 
 It is interesting to note that
 `(let ((<`*x1*`> <`*v1*`>)` ...
@@ -454,7 +454,7 @@ can be rewritten as:
                 moves)))
 
 Procedures which take other procedures as arguments,
-or which return procedures as a result,
+or which return a procedure as a result,
 are called *higher order procedures*,
 and they usually correspond to frequently-occurring
 patterns of code.
