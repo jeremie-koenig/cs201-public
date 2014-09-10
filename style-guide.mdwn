@@ -25,11 +25,12 @@ will be adjusted to match the nesting of your code.
 Long lines in Scheme programs are usually very hard to decipher.
 Consider even the simple procedure below:
 
-    (define filter (lambda (pred? lst)
+    ; Even elements of a list of numbers
+    (define even-elements (lambda (lst)
       (cond
         ((null? lst) '())
-        ((pred? (car lst)) (cons (car lst) (filter pred? (cdr lst))))
-        (else (filter pred? (cdr lst))))))
+        ((even? (first lst)) (cons (first lst) (even-elements (rest lst))))
+        (else (even-elements (rest lst))))))
 
 The second `cond` clause is hard to read, because
 your eyes and brain need to figure out where
@@ -48,19 +49,20 @@ immediately after you close one or more parentheses:
 Notice how the closing parenthesis in the product closes the line as well.
 This is a good rule of thumb to avoid too complex forms on a line
 which would be difficult to read.
-Reformatting `filter` above using this rule
+Reformatting `even-elements` above using this rule
 gives us the more readable:
 
-    (define filter
-      (lambda (pred? lst)
+    ; Even elements of a list of numbers
+    (define even-elements
+      (lambda (lst)
         (cond
           ((null? lst)
            '())
-          ((pred? (car lst))
-           (cons (car lst)
-                 (filter pred? (cdr lst))))
+          ((even? (first lst))
+           (cons (first lst)
+                 (even-elements (rest lst))))
           (else
-           (filter pred? (cdr lst))))))
+           (even-elements (rest lst))))))
 
 
 ### Parens tend to feel lonely
@@ -69,6 +71,7 @@ Don't put closing (or opening) parens on a line of their own. They get
 lonely easily. Seriously, it's superfluous information and takes up
 lines for nothing. Therefore, the following code is good Scheme style:
 
+    ; Compute n!
     (define factorial
       (lambda (n)
         (if (zero? n)
@@ -139,14 +142,14 @@ perhaps technically correct piece of code:
         (cond
           ((null? x)
            'error)
-          ((null? (cdr x))
-           (length (car x)))
-          ((> (length (cadr x))
-              (length (car x)))
-           (helper5 (cons (car x)
-                          (cddr x))))
+          ((null? (rest x))
+           (length (first x)))
+          ((> (length (first (rest x)))
+              (length (first x)))
+           (helper5 (cons (first x)
+                          (rest (rest x)))))
           (else
-           (helper5 (cdr x))))))
+           (helper5 (rest x))))))
 
 Because the formatting rules above were followed to the letter,
 with a little bit of training,
@@ -185,14 +188,14 @@ as far as the Scheme interpreter is concerned:
         (cond
           ((null? lists)
            'error)
-          ((null? (cdr lists))
-           (length (car lists)))
-          ((> (length (cadr lists))
-              (length (car lists)))
-           (shortest-length (cons (car lists)
-                                  (cddr lists))))
+          ((null? (rest lists))
+           (length (first lists)))
+          ((> (length (first (rest lists)))
+              (length (first lists)))
+           (shortest-length (cons (first lists)
+                                  (rest (rest lists)))))
           (else
-           (shortest-length (cdr lists))))))
+           (shortest-length (rest lists))))))
 
 In fact,
 the whole point of defining a procedure is *abstraction*:
@@ -223,8 +226,8 @@ Compare the above procedure with:
 
     ; Length of the shortest element in a list of lists
     (define shortest-length
-      (lambda (moves)
-        (smallest-element (lengths-of moves))))
+      (lambda (lists)
+        (smallest-element (lengths-of lists))))
 
     ; Find the smallest element in a list of numbers
     (define smallest-element
@@ -232,11 +235,11 @@ Compare the above procedure with:
         (cond
           ((null? lst)
            'error)
-          ((null? (cdr lst))
-           (car lst))
+          ((null? (rest lst))
+           (first lst))
           (else
-           (minimum (car lst)
-                    (smallest-element (cdr lst)))))))
+           (minimum (first lst)
+                    (smallest-element (rest lst)))))))
 
     ; Choose the smaller one of two numbers
     (define minimum
