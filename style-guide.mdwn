@@ -255,8 +255,8 @@ Compare the above procedure with:
           ((null? lists)
            '())
           (else
-           (cons (length (car lists))
-                 (lengths-of (cdr lists)))))))
+           (cons (length (first lists))
+                 (lengths-of (rest lists)))))))
 
 
 ### Avoid duplicating code
