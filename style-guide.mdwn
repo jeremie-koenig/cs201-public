@@ -175,7 +175,7 @@ make sure your code is as clear as possible.
 ### Choose variable and procedure names carefully
 
 Choosing descriptive names for your variables and procedures
-is much more important - and much harder -
+is much more important &mdash; and much harder &mdash;
 than you might suspect at first.
 
 The reason it is important
