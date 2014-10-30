@@ -539,7 +539,9 @@ instead of writing `minimum` by hand.
 Even better,
 since `min` can accept any number of arguments,
 we could have used `(apply min lst)`
-instead of writing a `smallest-element` procedure.
+instead of writing a `smallest-element` procedure,
+reducing the complicated procedure `shortest-length` even further,
+to the simple expression `(apply min (map length lists))`.
 Racket's built-in procedures are documented in
 the [Racket Guide](http://docs.racket-lang.org/guide/index.html).
 
