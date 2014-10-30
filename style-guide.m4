@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<title>Scheme style guide for CPSC 201</title>
+	<title>Racket style guide for CPSC 201</title>
 
 	<style type="text/css">
 	body {
