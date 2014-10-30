@@ -532,10 +532,8 @@ Even better,
 since `min` can accept any number of arguments,
 we could have used `(apply min lst)`
 instead of writing a `smallest-element` procedure.
-The variant of Racket used in CS201,
-and the set of built-in procedures,
-are defined in the document called
-[R5RS](http://www.schemers.org/Documents/Standards/R5RS/HTML/).
+Racket's built-in procedures are documented in
+the [Racket Guide](http://docs.racket-lang.org/guide/index.html).
 
 
 ## Acknowledgments
