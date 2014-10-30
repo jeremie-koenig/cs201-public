@@ -1,3 +1,11 @@
+<!--
+  GOD KILLS A KITTEN EVERY TIME YOU EDIT THE HTML OUTPUT DIRECTLY.
+  Instead, download the Markdown source from github with:
+
+    $ git clone https://github.com/jeremie-koenig/cs201-public.git
+
+  Then if you feel like it, send your changes to me <jk@jk.fr.eu.org>.
+-->
 
 # Racket style guide for CPSC 201
 
