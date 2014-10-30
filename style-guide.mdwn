@@ -544,6 +544,8 @@ reducing the complicated procedure `shortest-length` even further,
 to the simple expression `(apply min (map length lists))`.
 Racket's built-in procedures are documented in
 the [Racket Guide](http://docs.racket-lang.org/guide/index.html).
+(However for the purposes of CPSC 201,
+you should only use the procedures seen in class.)
 
 
 ## Acknowledgments
