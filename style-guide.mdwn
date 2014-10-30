@@ -263,49 +263,57 @@ Compare the above procedure with:
 
 Consider this code:
 
-    (define roll
+    ; Days of the week
+    (define days
+      '(Mon Tue Wed Thu Fri Sat Sun))
+
+    ; Return a random day of the week
+    (define choose-random-day
+      (lambda ()
+        (list-ref days (random (length days)))))
+
+    ; Take a list of dice (where a die is itself a list of face values),
+    ; roll every die, and return the resulting score. For instance,
+    ; if we roll the dice ((1 2 3 4 5 6) (1 2 3 4)), we might get the
+    ; results 5 and 2, and return 7.
+    (define roll-dice
       (lambda (dice)
         (cond
           ((null? dice) 0)
-          (else (+ (list-ref (car dice)
-                             (random-integer
-                               (length (car dice))))
-                   (roll (cdr dice)))))))
-
-    (define choose-random-move
-      (lambda (sum state)
-        (cond
-          ((null? (possible-moves sum state))
-           'none)
-          (else
-           (list-ref (possible-moves sum state)
-                     (random-integer
-                       (length (possible-moves sum states))))))))
+          (else (+ (list-ref (first dice)
+                             (random (length (first dice))))
+                   (roll-dice (rest dice)))))))
 
 Both of these procedures contain the subexpression
-`(list-ref <`*something*`> (random-integer (length <`*something*`>)))`,
+`(list-ref <`*something*`> (random (length <`*something*`>)))`,
 and so we may want to split that into an auxiliary procedure,
 namely `pick-random`:
 
-    (define roll
+    ; Days of the week
+    (define days
+      '(Mon Tue Wed Thu Fri Sat Sun))
+
+    ; Return a random day of the week
+    (define choose-random-day
+      (lambda ()
+        (pick-random days)))
+
+    ; Take a list of dice (where a die is itself a list of face values),
+    ; roll every die, and return the resulting score. For instance,
+    ; if we roll the dice ((1 2 3 4 5 6) (1 2 3 4)), we might get the
+    ; results 5 and 2, and return 7.
+    (define roll-dice
       (lambda (dice)
         (cond
           ((null? dice) 0)
-          (else (+ (pick-random (car dice))
-                   (roll (cdr dice)))))))
+          (else (+ (pick-random (first dice))
+                   (roll-dice (rest dice)))))))
 
-    (define choose-random-move 
-      (lambda (sum state)
-        (cond
-          ((null? (possible-moves sum state))
-           'none)
-          (else
-           (pick-random (possible-moves sum states))))))
-
+    ; Choose a random element from a list
     (define pick-random
       (lambda (lst)
         (list-ref lst
-                  (random-integer (length lst)))))
+                  (random (length lst)))))
 
 Code duplication is best avoided for several reasons.
 If you write the same thing several times,
@@ -317,6 +325,7 @@ it is generally a good indication that
 you should be writing an auxiliary procedure.
 
 
+<!-- TODO: update this section
 ### Avoid duplicating computations
 
 You may have noticed another benefit
@@ -378,6 +387,7 @@ and so this new version
 pretty much amounts to
 replacing the constant `pick-random-if-there-is-one`
 by its definition!
+-->
 
 
 ### Use higher-order procedures
@@ -386,48 +396,48 @@ Sometimes it is not entirely obvious how to
 package some redundant code into its own procedure.
 Consider the following:
 
-    (define keep-moves-of-length
-      (lambda (len moves)
+    ; Return a list of all even numbers in lst
+    (define keep-even-numbers
+      (lambda (lst)
         (cond
-          ((null? moves)
+          ((null? lst)
            '())
-          ((= len (length (car moves)))
-           (cons (car moves)
-                 (keep-moves-of-length len (cdr moves))))
+          ((even? (first lst))
+           (cons (first lst)
+                 (keep-even-numbers (rest lst))))
           (else
-           (keep-moves-of-length len (cdr moves))))))
+           (keep-even-numbers (rest lst))))))
 
-    (define keep-possible-moves
-      (lambda (sum moves)
+    ; Return a list of all multiples of three in lst
+    (define keep-multiples-of-three
+      (lambda (lst)
         (cond
-          ((null? moves)
+          ((null? lst)
            '())
-          ((= (sum-of (car moves))
-              sum)
-           (cons (car moves)
-                 (keep-possible-moves sum (cdr moves))))
+          ((= (remainder (first lst) 3)
+              0)
+           (cons (first lst)
+                 (keep-multiples-of-three (rest lst))))
           (else
-           (keep-possible-moves sum (cdr moves))))))
+	   (keep-multiples-of-three (rest lst))))))
 
 Clearly these two procedures have much code in common:
 both are meant to filter a list
 in order to keep only those elements which
 satisfy a certain property
-(such as, being of length `len`,
-or adding up to `sum`).
+(such as being even, or a multiple of three).
 The only difference between them
 is the code used for testing
 which elements qualify.
 However, it may not be entirely obvious
-how to factorize the common code
+how to factorize the common code (everything else)
 into an auxiliary procedure.
 
 Luckily, Racket procedures are values like any other,
 and this can be used to inject some varying code
 into a common template as a parameter.
-In fact, in this case the common template is exactly the `filter`
-procedure which we saw earlier!
-For reference we had:
+In fact, in this case the common template is
+the famous procedure `filter`:
 
     (define filter
       (lambda (pred? list)
@@ -440,21 +450,19 @@ For reference we had:
           (else
            (filter pred? (cdr list))))))
 
-Then `keep-moves-of-length` and `keep-possible-moves`
+Then `keep-even-numbers` and `keep-multiples-of-three`
 can be rewritten as:
 
-    (define keep-moves-of-length
-      (lambda (len moves)
-        (filter (lambda (m)
-                  (= len (length m)))
-                moves)))
+    (define keep-even-numbers
+      (lambda (lst)
+        (filter even? lst)))
 
-    (define keep-possible-moves
-      (lambda (sum moves)
-        (filter (lambda (m)
-                  (= (sum-of m)
-                     sum))
-                moves)))
+    (define keep-multiples-of-three
+      (lambda (lst)
+        (filter (lambda (n)
+                  (= (remainder n 3)
+                     0))
+                lst)))
 
 Procedures which take other procedures as arguments,
 or which return a procedure as a result,
