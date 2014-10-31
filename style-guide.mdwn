@@ -133,7 +133,7 @@ lines for nothing. Therefore, the following code is good Racket style:
 
 Notice the closing parens at the end.
 An experienced Racket programmer won't see
-those, though - the expression ends there, the next one begins at
+those, though &mdash; the expression ends there, the next one begins at
 column zero, so they know that everything is closed there.
 
 
