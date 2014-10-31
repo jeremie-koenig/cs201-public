@@ -10,6 +10,51 @@
 # Racket style guide for CPSC 201
 
 
+<!--
+  The version used for the Spring 2014 course had this introduction.
+  For Fall 2014, I leave it out of the style guide per se, but instead
+  will try to communicate something to that effect when I announce
+  the guide's availability.
+-->
+
+<!--
+## Introduction
+
+When you first start learning Racket
+(or any programming language, for that matter!)
+you'll typically start by learning its syntax and
+some of its reserved keywords (e.g., `define`, `if`, `cond`) and
+built-in procedures (e.g., `max`, `map`, `apply`).
+Both the lecture summaries on Classes\*v2 and
+[The Racket Guide](http://docs.racket-lang.org/guide/)
+are great resources for this.
+However, with all these things on your mind,
+it can be easy to neglect,
+or even completely ignore issues like formatting or efficiency.
+
+By now, though, you should be familiar with the basics of Racket.
+The time is right for you to better understand
+how to make your code more clear, concise and easy to understand,
+both for you and for anyone else reading it.
+The more complex your code,
+the more important it becomes for you to adhere to these guidelines:
+you'll be surprised how much time you'll save when
+you're debugging your programs or
+trying to understand code that you've written some time ago.
+
+Everyone has a unique coding style,
+which is why this is a style guide and not a list of style requirements.
+However,
+we guarantee that once you get in the habit of
+following some of these suggestions,
+you'll quickly start to appreciate the power of well-written code.
+
+Good luck, and happy coding!
+
+&mdash; The CS201 Staff
+-->
+
+
 ## Formatting
 
 Because the syntax of Racket is so uniform,
