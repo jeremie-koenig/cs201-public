@@ -284,6 +284,16 @@ Compare the above procedure with:
       (lambda (lists)
         (smallest-element (lengths-of lists))))
 
+    ; Given a list of lists, build a list of their lengths
+    (define lengths-of
+      (lambda (lists)
+        (cond
+          ((null? lists)
+           '())
+          (else
+           (cons (length (first lists))
+                 (lengths-of (rest lists)))))))
+
     ; Find the smallest element in a list of numbers
     (define smallest-element
       (lambda (lst)
@@ -302,16 +312,6 @@ Compare the above procedure with:
         (if (< x y)
             x
             y)))
-
-    ; Given a list of lists, build a list of their lengths
-    (define lengths-of
-      (lambda (lists)
-        (cond
-          ((null? lists)
-           '())
-          (else
-           (cons (length (first lists))
-                 (lengths-of (rest lists)))))))
 
 
 ### Avoid duplicating code
