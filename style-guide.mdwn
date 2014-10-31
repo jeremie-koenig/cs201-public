@@ -102,8 +102,9 @@ is easiest seen in example:
           (baz))
 
 As you can see, the expressions `(foo)`, `(bar)` and `(baz)` are all lined
-up under each other. They're all on the same syntactic level - all are
-arguments to `list` - so they should be lined up under each other.
+up under each other. They're all on the same syntactic level
+&mdash; all are arguments to `list` &mdash;
+so they should be lined up under each other.
 
 There are exceptions,
 such as `define` as shown above,
@@ -118,7 +119,7 @@ the definition:
 In general, DrRacket's automatic indentation does the right thing.
 
 
-### Break for one - break for all
+### Break for one &ndash; break for all
 
 If you put subexpressions onto multiple lines,
 put every subexpression on a single line.
