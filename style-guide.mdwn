@@ -341,8 +341,8 @@ Consider this code:
 
 Both of these procedures contain the subexpression
 `(list-ref <`*something*`> (random (length <`*something*`>)))`,
-and so we may want to split that into an auxiliary procedure,
-namely `pick-random`:
+and so we may want to split that into
+an auxiliary procedure `pick-random`:
 
     ; Days of the week
     (define days
@@ -488,8 +488,10 @@ However, it may not be entirely obvious
 how to factorize the common code (everything else)
 into an auxiliary procedure.
 
-Luckily, Racket procedures are values like any other,
-and this can be used to inject some varying code
+Luckily, Racket procedures are *first-class values*
+which can be passed around as data in the same way as
+integers, strings, etc.
+This can be used to inject some varying code
 into a common template as a parameter.
 In fact, in this case the common template is
 the famous procedure `filter`:
