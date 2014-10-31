@@ -452,19 +452,19 @@ package some redundant code into its own procedure.
 Consider the following:
 
     ; Return a list of all even numbers in lst
-    (define keep-even-numbers
+    (define even-elements
       (lambda (lst)
         (cond
           ((null? lst)
            '())
           ((even? (first lst))
            (cons (first lst)
-                 (keep-even-numbers (rest lst))))
+                 (even-elements (rest lst))))
           (else
-           (keep-even-numbers (rest lst))))))
+           (even-elements (rest lst))))))
 
     ; Return a list of all multiples of three in lst
-    (define keep-multiples-of-three
+    (define multiples-of-three-in
       (lambda (lst)
         (cond
           ((null? lst)
@@ -472,9 +472,9 @@ Consider the following:
           ((= (remainder (first lst) 3)
               0)
            (cons (first lst)
-                 (keep-multiples-of-three (rest lst))))
+                 (multiples-of-three-in (rest lst))))
           (else
-	   (keep-multiples-of-three (rest lst))))))
+	   (multiples-of-three-in (rest lst))))))
 
 Clearly these two procedures have much code in common:
 both are meant to filter a list
@@ -505,14 +505,14 @@ the famous procedure `filter`:
           (else
            (filter pred? (cdr list))))))
 
-Then `keep-even-numbers` and `keep-multiples-of-three`
+Then `even-elements` and `multiples-of-three-in`
 can be rewritten as:
 
-    (define keep-even-numbers
+    (define even-elements
       (lambda (lst)
         (filter even? lst)))
 
-    (define keep-multiples-of-three
+    (define multiples-of-three-in
       (lambda (lst)
         (filter (lambda (n)
                   (= (remainder n 3)
