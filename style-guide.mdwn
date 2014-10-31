@@ -276,7 +276,7 @@ is more complicated than it needs to be?
 ### Keep your procedures short
 
 Shorter procedures are easier to get right,
-read, reason about and debug.
+read, reason about, and debug.
 Compare the above procedure with:
 
     ; Length of the shortest element in a list of lists
