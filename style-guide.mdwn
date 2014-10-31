@@ -501,11 +501,11 @@ the famous procedure `filter`:
         (cond
           ((null? list)
            '())
-          ((pred? (car list))
-           (cons (car list)
-                 (filter pred? (cdr list))))
+          ((pred? (first list))
+           (cons (first list)
+                 (filter pred? (rest list))))
           (else
-           (filter pred? (cdr list))))))
+           (filter pred? (rest list))))))
 
 Then `even-elements` and `multiples-of-three-in`
 can be rewritten as:
@@ -536,8 +536,8 @@ in the `lengths-of` procedure that we saw earlier:
           ((null? lists)
            '())
           (else
-           (cons (length (car lists))
-                 (lengths-of (cdr lists)))))))
+           (cons (length (first lists))
+                 (lengths-of (rest lists)))))))
 
 The `lengths-of` procedure
 evaluates to a list
@@ -563,7 +563,7 @@ therefore we may want to drop the `lengths-of` procedure altogether.
 ## Closing remarks
 
 You may have noticed that in `filter` above,
-the subexpression `(filter pred? (cdr list))`
+the subexpression `(filter pred? (rest list))`
 appears twice.
 We could have used `let` to factor it out,
 however in this particular case,
