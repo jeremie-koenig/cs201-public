@@ -86,7 +86,8 @@ lines for nothing. Therefore, the following code is good Racket style:
             1
             (* n (factorial (- n 1))))))
 
-Notice the closing parens at the end. A seasoned schemer won't see
+Notice the closing parens at the end.
+An experienced Racket programmer won't see
 those, though - the expression ends there, the next one begins at
 column zero, so they know that everything is closed there.
 
