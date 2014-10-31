@@ -474,7 +474,7 @@ Consider the following:
            (cons (first lst)
                  (multiples-of-three-in (rest lst))))
           (else
-	   (multiples-of-three-in (rest lst))))))
+           (multiples-of-three-in (rest lst))))))
 
 Clearly these two procedures have much code in common:
 both are meant to filter a list
